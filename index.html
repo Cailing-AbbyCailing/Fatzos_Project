@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FATZO'S Admin Gateway</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+
+    <div class="mobile-container">
+        <div id="toast" class="toast-msg hidden">Changes saved</div>
+
+
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-box">
+                    <img src="logo.png" alt="FATZO'S Logo" class="brand-logo" onerror="this.style.display='none';">
+                </div>
+                <h1 class="brand-title-text">FATZO'S</h1>
+                <p class="brand-subtitle-text">Lechon & Catering Services</p>
+            </div>
+        </header>
+
+
+        <main id="home-screen" class="menu-main">
+            <div class="buttons-wrapper">
+                <button class="menu-btn" onclick="openScreen('lechon')">LECHON</button>
+                <button class="menu-btn" onclick="openScreen('catering')">CATERING</button>
+                <button class="menu-btn" onclick="openScreen('contact')">CONTACT</button>
+                <button class="menu-btn" onclick="openScreen('tracker')">TRACKER</button>
+            </div>
+        </main>
+
+
+        <section id="lechon-screen" class="subpage-main">
+            <div class="content-card">
+                <h2 class="section-title">LECHON <i class="fa-solid fa-pen-to-square"></i></h2>
+                <div id="lechon-container" class="inner-box">
+                </div>
+                <button class="back-btn" onclick="openScreen('home')">
+                    <span class="arrow-icon">&#10094;</span>
+                </button>
+            </div>
+        </section>
+
+
+        <section id="catering-screen" class="subpage-main">
+            <div class="content-card">
+                <h2 class="section-title">CATERING <i class="fa-solid fa-pen-to-square"></i></h2>
+                <div id="catering-container" class="inner-box">
+                </div>
+                <button class="back-btn" onclick="openScreen('home')">
+                    <span class="arrow-icon">&#10094;</span>
+                </button>
+            </div>
+        </section>
+
+
+        <section id="contact-screen" class="subpage-main">
+            <div class="content-card">
+                <h2 class="section-title">CONTACT <i class="fa-solid fa-pen-to-square"></i></h2>
+                <div class="inner-box">
+                    <div class="contact-content">
+                        <div class="contact-group">
+                            <span class="contact-subtitle">Hotline</span>
+                            <input type="text" value="+63 917 123 4567" class="contact-text-input">
+                        </div>
+                        <div class="contact-group">
+                            <span class="contact-subtitle">Email</span>
+                            <input type="text" value="orders@fatzoslechon.ph" class="contact-text-input">
+                        </div>
+                        <div class="contact-group">
+                            <span class="contact-subtitle">Address</span>
+                            <input type="text" value="Zone 4, National Highway, CDO" class="contact-text-input">
+                        </div>
+                        <button class="save-action-btn" style="margin-top: 10px;" onclick="notify('Contact Info Saved')">Save Info</button>
+                    </div>
+                </div>
+                <button class="back-btn" onclick="openScreen('home')">
+                    <span class="arrow-icon">&#10094;</span>
+                </button>
+            </div>
+        </section>
+
+
+        <section id="tracker-screen" class="subpage-main">
+            <div class="content-card">
+                <h2 class="section-title">TRACKER <i class="fa-solid fa-pen-to-square"></i></h2>
+                <div id="tracker-container" class="inner-box">
+                    
+                </div>
+                <button class="back-btn" onclick="openScreen('home')">
+                    <span class="arrow-icon">&#10094;</span>
+                </button>
+            </div>
+        </section>
+
+
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
