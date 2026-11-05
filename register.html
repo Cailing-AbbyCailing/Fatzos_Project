@@ -1,0 +1,351 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fatzo's - Sign In</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS Reset & Variables */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary-burgundy: #6b1419;
+            --header-burgundy: #5a1015;
+            --accent-gold: #e5b84d;
+            --bg-cream: #e9cf9f;
+        }
+
+        body {
+            background-color: #222;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Mobile Screen Container */
+        .mobile-frame {
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            max-height: 844px;
+            background-color: var(--primary-burgundy);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        /* Subtle Background Pattern */
+        .mobile-frame::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(
+                rgba(229, 184, 77, 0.07) 1px,
+                transparent 1px
+            );
+            background-size: 20px 20px;
+            pointer-events: none;
+        }
+
+        /* Logo Area */
+        .logo-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 28px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-logo {
+            width: 100%;
+            max-width: 380px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* Sign In Card */
+        .auth-card {
+            width: 100%;
+            max-width: 340px;
+            background-color: var(--bg-cream);
+            border: 2px solid rgba(229, 184, 77, 0.6);
+            border-radius: 25px;
+            padding: 30px 22px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Card Heading */
+        .card-title {
+            font-family: 'Cinzel', serif;
+            font-size: 23px;
+            color: var(--primary-burgundy);
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .card-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 13px;
+            color: var(--header-burgundy);
+            font-style: italic;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        /* Form */
+        .auth-form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .input-group {
+            width: 100%;
+            margin-bottom: 18px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-label {
+            font-family: 'Cinzel', serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary-burgundy);
+            letter-spacing: 1px;
+            margin-bottom: 7px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .form-input {
+            width: 100%;
+            height: 48px;
+            background-color: rgba(255,255,255,0.18);
+            border: 1.5px solid var(--primary-burgundy);
+            border-radius: 12px;
+            padding: 0 42px 0 14px;
+            font-family: 'Playfair Display', serif;
+            font-size: 15px;
+            color: var(--header-burgundy);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 2px rgba(229,184,77,0.25);
+        }
+
+        .form-input::placeholder {
+            color: rgba(90,16,21,0.5);
+        }
+
+        /* Password Visibility Toggle */
+        .eye-icon {
+            position: absolute;
+            right: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 12px;
+            border: 2px solid var(--primary-burgundy);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .eye-icon::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 1px;
+            width: 6px;
+            height: 6px;
+            background-color: var(--primary-burgundy);
+            border-radius: 50%;
+        }
+
+        /* Sign In Button */
+        .submit-btn {
+            width: 100%;
+            height: 49px;
+            background-color: var(--primary-burgundy);
+            color: var(--accent-gold);
+            border: 2px solid rgba(229,184,77,0.5);
+            border-radius: 40px;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            margin-top: 8px;
+            margin-bottom: 17px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+            transition: 0.2s ease;
+        }
+
+        .submit-btn:active {
+            transform: translateY(2px);
+        }
+
+        .submit-btn:hover {
+            background-color: var(--header-burgundy);
+        }
+
+        /* Register Link */
+        .toggle-link {
+            color: var(--primary-burgundy);
+            font-family: 'Playfair Display', serif;
+            font-size: 13px;
+            font-style: italic;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .toggle-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Mobile Adjustments */
+        @media (max-width: 400px) {
+            .mobile-frame {
+                max-height: none;
+                border-radius: 0;
+            }
+
+            .auth-card {
+                padding: 26px 20px;
+            }
+        }
+
+        @media (max-height: 650px) {
+            .mobile-frame {
+                padding: 15px;
+            }
+
+            .logo-container {
+                margin-bottom: 15px;
+            }
+
+            .brand-logo {
+                max-width: 150px;
+            }
+
+            .auth-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="mobile-frame">
+
+        <!-- Logo -->
+        <div class="logo-container">
+            <img src="./logo.png" alt="Fatzo's Logo" class="brand-logo">
+        </div>
+
+        <!-- Sign In Card -->
+        <div class="auth-card">
+
+            <h2 class="card-title">REGISTER</h2>
+            <p class="card-subtitle">Create Account</p>
+
+            <form class="auth-form" action="#" method="post">
+
+                <!-- Email -->
+                <div class="input-group">
+                    <label for="email" class="input-label">
+                        EMAIL ADDRESS
+                    </label>
+
+                    <div class="input-wrapper">
+                        <input
+                            type="email"
+                            id="email"
+                            class="form-input"
+                            placeholder="Enter your email"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="input-group">
+                    <label for="password" class="input-label">
+                        PASSWORD
+                    </label>
+
+                    <div class="input-wrapper">
+                        <input
+                            type="password"
+                            id="password"
+                            class="form-input"
+                            placeholder="Enter your password"
+                            required
+                        >
+
+                        <span
+                            class="eye-icon"
+                            onclick="togglePassword()"
+                            aria-label="Toggle password visibility"
+                        ></span>
+                    </div>
+                </div>
+
+                <!-- Sign In -->
+                <button type="submit" class="submit-btn">
+                    CREATE
+                </button>
+
+                <!-- Register -->
+                <a href="register.html" class="toggle-link">
+                    back to login
+                </a>
+
+            </form>
+        </div>
+
+    </div>
+
+    <script>
+        function togglePassword() {
+            const password = document.getElementById("password");
+
+            password.type =
+                password.type === "password" ? "text" : "password";
+        }
+    </script>
+
+</body>
+</html>
