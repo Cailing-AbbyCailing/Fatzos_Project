@@ -193,6 +193,17 @@
             border-radius: 50%;
         }
 
+        /* Hide browser-generated password reveal controls */
+          input::-ms-reveal,
+          input::-ms-clear {
+          display: none;
+        }
+
+          input::-webkit-credentials-auto-fill-button {
+          visibility: hidden;
+          display: none !important;
+        }
+
         /* Sign In Button */
         .submit-btn {
             width: 100%;
@@ -272,16 +283,16 @@
 
         <!-- Logo -->
         <div class="logo-container">
-            <img src="./logo.png" alt="Fatzo's Logo" class="brand-logo">
+            <img src="images/logo.png" alt="Fatzo's Logo" class="brand-logo">
         </div>
 
         <!-- Sign In Card -->
         <div class="auth-card">
 
-            <h2 class="card-title">REGISTER</h2>
-            <p class="card-subtitle">Create Account</p>
+            <h2 class="card-title">WELCOME BACK</h2>
+            <p class="card-subtitle">Sign in to Continue</p>
 
-            <form class="auth-form" action="#" method="post">
+            <form id="loginForm" class="auth-form" action="#" method="post">
 
                 <!-- Email -->
                 <div class="input-group">
@@ -325,12 +336,12 @@
 
                 <!-- Sign In -->
                 <button type="submit" class="submit-btn">
-                    CREATE
+                    SIGN IN
                 </button>
 
                 <!-- Register -->
                 <a href="register.html" class="toggle-link">
-                    back to login
+                    New here? Create Account
                 </a>
 
             </form>
@@ -346,6 +357,10 @@
                 password.type === "password" ? "text" : "password";
         }
     </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/signin.js"></script>
 
 </body>
 </html>

@@ -192,6 +192,16 @@
             background-color: var(--primary-burgundy);
             border-radius: 50%;
         }
+        /* Hide browser-generated password reveal controls */
+        input::-ms-reveal,
+        input::-ms-clear {
+            display: none;
+        }   
+
+        input::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+    display: none !important;
+        }   
 
         /* Sign In Button */
         .submit-btn {
@@ -272,16 +282,34 @@
 
         <!-- Logo -->
         <div class="logo-container">
-            <img src="./logo.png" alt="Fatzo's Logo" class="brand-logo">
+            <img src="images/logo.png" alt="Fatzo's Logo" class="brand-logo">
         </div>
 
         <!-- Sign In Card -->
         <div class="auth-card">
 
-            <h2 class="card-title">WELCOME BACK</h2>
-            <p class="card-subtitle">Sign in to Continue</p>
+            <h2 class="card-title">REGISTER</h2>
+            <p class="card-subtitle">Create Account</p>
 
-            <form class="auth-form" action="#" method="post">
+            <form id="registerForm" class="auth-form" action="#" method="post">
+
+
+                 <!-- Full Name -->
+          <div class="input-group">
+              <label for="fullName" class="input-label">
+                  FULL NAME
+                   </label>
+
+                     <div class="input-wrapper">
+                      <input
+                       type="text"
+                       id="fullName"
+                       class="form-input"
+                       placeholder="Enter your full name"
+                       required
+                    >
+                </div>
+            </div>
 
                 <!-- Email -->
                 <div class="input-group">
@@ -325,12 +353,12 @@
 
                 <!-- Sign In -->
                 <button type="submit" class="submit-btn">
-                    SIGN IN
+                    CREATE
                 </button>
 
-                <!-- Register -->
-                <a href="register.html" class="toggle-link">
-                    New here? Create Account
+                <!-- Back to Sign in -->
+                <a href="signin.html" class="toggle-link">
+                    back to login
                 </a>
 
             </form>
@@ -346,6 +374,10 @@
                 password.type === "password" ? "text" : "password";
         }
     </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/register.js"></script>
 
 </body>
 </html>
