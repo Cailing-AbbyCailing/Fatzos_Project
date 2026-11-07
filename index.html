@@ -9,21 +9,18 @@
 </head>
 <body>
 
-
     <div class="mobile-container">
         <div id="toast" class="toast-msg hidden">Changes saved</div>
-
 
         <header class="header">
             <div class="header-content">
                 <div class="logo-box">
-                    <img src="logo.png" alt="FATZO'S Logo" class="brand-logo" onerror="this.style.display='none';">
+                    <img src="images/logo.png" alt="FATZO'S Logo" class="brand-logo" onerror="this.style.display='none';">
                 </div>
-                <h1 class="brand-title-text">FATZO'S</h1>
-                <p class="brand-subtitle-text">Lechon & Catering Services</p>
+                <h1 class="brand-title-text" style="display:none;">FATZO'S</h1>
+                <span class="brand-subtitle-text">Admin Panel</span>
             </div>
         </header>
-
 
         <main id="home-screen" class="menu-main">
             <div class="buttons-wrapper">
@@ -34,30 +31,74 @@
             </div>
         </main>
 
-
         <section id="lechon-screen" class="subpage-main">
             <div class="content-card">
-                <h2 class="section-title">LECHON <i class="fa-solid fa-pen-to-square"></i></h2>
+                <div class="sub-nav-tabs">
+                    <button class="sub-tab-btn active" onclick="openScreen('lechon')"><i class="fa-solid fa-drumstick-bite"></i> Lechon</button>
+                    <button class="sub-tab-btn" onclick="openScreen('catering')"><i class="fa-solid fa-utensils"></i> Catering</button>
+                    <button class="sub-tab-btn" onclick="openScreen('tracker')"><i class="fa-solid fa-truck"></i> Tracker <span class="nav-dot"></span></button>
+                </div>
+
+                <div class="kpi-cards-wrapper">
+                    <div class="kpi-card">
+                        <div class="kpi-info"><span class="kpi-label">ACTIVE ORDERS</span><span class="kpi-value">3 Active</span></div>
+                        <i class="fa-solid fa-receipt kpi-icon"></i>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-info"><span class="kpi-label">MENU ITEMS</span><span class="kpi-value">7 Available</span></div>
+                        <i class="fa-solid fa-list-check kpi-icon"></i>
+                    </div>
+                </div>
+
+                <div class="section-header-row">
+                    <h2 class="section-title"><i class="fa-solid fa-sliders"></i> LECHON MENU & PRICING</h2>
+                    <button class="open-modal-btn" onclick="openAddModal('lechon')">+ Add Item</button>
+                </div>
+
                 <div id="lechon-container" class="inner-box">
                 </div>
+                
                 <button class="back-btn" onclick="openScreen('home')">
                     <span class="arrow-icon">&#10094;</span>
                 </button>
             </div>
         </section>
 
-
-        <section id="catering-screen" class="subpage-main">
-            <div class="content-card">
-                <h2 class="section-title">CATERING <i class="fa-solid fa-pen-to-square"></i></h2>
-                <div id="catering-container" class="inner-box">
+        <div id="addItemModal" class="modal-overlay hidden">
+            <div class="modal-card">
+                <button class="modal-close-btn" onclick="closeAddModal()">&times;</button>
+                <h3 id="modal-title" class="modal-title">ADD NEW LECHON ITEM</h3>
+                
+                <div class="modal-form-group">
+                    <label class="modal-label">ITEM NAME</label>
+                    <input type="text" id="modal-item-name" class="modal-input" placeholder="e.g. Medium Lechon">
                 </div>
-                <button class="back-btn" onclick="openScreen('home')">
-                    <span class="arrow-icon">&#10094;</span>
-                </button>
-            </div>
-        </section>
 
+                <div class="modal-row">
+                    <div class="modal-form-group flex-1">
+                        <label class="modal-label">PRICE (₱)</label>
+                        <input type="number" id="modal-item-price" class="modal-input" placeholder="0.00">
+                    </div>
+                    <div class="modal-form-group flex-1">
+                        <label class="modal-label">STATUS</label>
+                        <select id="modal-item-status" class="modal-input">
+                            <option value="available">Available</option>
+                            <option value="unavailable">Unavailable</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-form-group">
+                    <label class="modal-label">DESCRIPTION / INCLUSIONS</label>
+                    <textarea id="modal-item-desc" class="modal-textarea" placeholder="Enter details or inclusions..."></textarea>
+                </div>
+
+                <div class="modal-btn-row">
+                    <button class="modal-cancel-btn" onclick="closeAddModal()">Cancel</button>
+                    <button class="modal-save-btn" onclick="saveNewItem()">Save Changes</button>
+                </div>
+            </div>
+        </div>
 
         <section id="contact-screen" class="subpage-main">
             <div class="content-card">
@@ -85,22 +126,98 @@
             </div>
         </section>
 
-
-        <section id="tracker-screen" class="subpage-main">
+        <section id="catering-screen" class="subpage-main">
             <div class="content-card">
-                <h2 class="section-title">TRACKER <i class="fa-solid fa-pen-to-square"></i></h2>
-                <div id="tracker-container" class="inner-box">
-                    
+                <!-- Top Sub-Navigation Tabs -->
+                <div class="sub-nav-tabs">
+                    <button class="sub-tab-btn" onclick="openScreen('lechon')"><i class="fa-solid fa-drumstick-bite"></i> Lechon</button>
+                    <button class="sub-tab-btn active" onclick="openScreen('catering')"><i class="fa-solid fa-utensils"></i> Catering</button>
+                    <button class="sub-tab-btn" onclick="openScreen('tracker')"><i class="fa-solid fa-truck"></i> Tracker <span class="nav-dot"></span></button>
                 </div>
+
+                <!-- Summary KPI Cards -->
+                <div class="kpi-cards-wrapper">
+                    <div class="kpi-card">
+                        <div class="kpi-info"><span class="kpi-label">EVENT PACKAGES</span><span class="kpi-value">5 Active</span></div>
+                        <i class="fa-solid fa-calendar-days kpi-icon"></i>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-info"><span class="kpi-label">BOOKINGS</span><span class="kpi-value">4 Confirmed</span></div>
+                        <i class="fa-solid fa-clipboard-list kpi-icon"></i>
+                    </div>
+                </div>
+
+                <!-- Catering Section Header with + Add Item Button -->
+                <div class="section-header-row">
+                    <h2 class="section-title"><i class="fa-solid fa-sliders"></i> CATERING MENU</h2>
+                        <button class="open-modal-btn" onclick="openAddModal('catering')">+ Add Item</button>
+                </div>
+
+                <div id="catering-container" class="inner-box">
+                    <!-- Populated dynamically via script.js -->
+                </div>
+                
                 <button class="back-btn" onclick="openScreen('home')">
                     <span class="arrow-icon">&#10094;</span>
                 </button>
             </div>
         </section>
 
+        <section id="tracker-screen" class="subpage-main">
+            <div class="content-card">
+                <div class="sub-nav-tabs">
+                    <button class="sub-tab-btn" onclick="openScreen('lechon')">
+                        <i class="fa-solid fa-drumstick-bite"></i> Lechon
+                    </button>
+                    <button class="sub-tab-btn" onclick="openScreen('catering')">
+                        <i class="fa-solid fa-utensils"></i> Catering
+                    </button>
+                    <button class="sub-tab-btn active" onclick="openScreen('tracker')">
+                        <i class="fa-solid fa-truck"></i> Tracker <span class="nav-dot"></span>
+                    </button>
+                </div>
 
-    </div>
+                <div class="kpi-cards-wrapper">
+                    <div class="kpi-card">
+                        <div class="kpi-info">
+                            <span class="kpi-label">DISPATCHED</span>
+                            <span class="kpi-value" id="kpi-dispatched-count">1 On Delivery</span>
+                        </div>
+                        <i class="fa-solid fa-route kpi-icon"></i>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-info">
+                            <span class="kpi-label">QUEUE TODAY</span>
+                            <span class="kpi-value" id="kpi-queue-count">3 Total</span>
+                        </div>
+                        <i class="fa-solid fa-clock-rotate-left kpi-icon"></i>
+                    </div>
+                </div>
 
+                <div class="tracker-header-row">
+                    <h2 class="section-title"><i class="fa-solid fa-user-gear"></i> CUSTOMER ORDERS</h2>
+                    <span id="tracker-order-count" class="tracker-count-badge">3 Total</span>
+                </div>
+
+                <div class="tracker-filter-bar">
+                    <input type="text" id="tracker-search-input" placeholder="Search customer or order ID..." class="tracker-search-input" onkeyup="filterTrackerOrders()">
+                    <select id="tracker-status-filter" class="tracker-status-filter" onchange="filterTrackerOrders()">
+                        <option value="all">All Status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Preparing">Preparing</option>
+                        <option value="Out for Delivery">Out for Delivery</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+
+                <div id="tracker-container" class="inner-box">
+                </div>
+
+                <button class="back-btn" onclick="openScreen('home')">
+                    <span class="arrow-icon">&#10094;</span>
+                </button>
+            </div>
+        </section>
 
     <script src="script.js"></script>
 </body>
