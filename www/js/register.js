@@ -39,7 +39,7 @@ registerForm.addEventListener("submit", async function (event) {
     // Handle successful registration
     if (data.session) {
         alert("Account created successfully!");
-        window.location.href = "signin.html";
+        window.location.href = "index.html";
     } else {
         alert("Account created! Please check your email to verify your account.");
     }

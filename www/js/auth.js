@@ -34,7 +34,7 @@ async function logoutUser() {
     }
 
     // Return the user to the sign-in page
-    window.location.href = "signin.html";
+    window.location.href = "index.html";
 
     
 }
@@ -45,13 +45,13 @@ async function requireRole(requiredRole) {
     const { profile, error } = await getCurrentProfile();
 
     if (error || !profile) {
-        window.location.href = "signin.html";
+        window.location.href = "index.html";
         return false;
     }
 
     if (profile.role !== requiredRole) {
         alert("Access denied. You do not have permission to view this page.");
-        window.location.href = "signin.html";
+        window.location.href = "index.html";
         return false;
     }
 
