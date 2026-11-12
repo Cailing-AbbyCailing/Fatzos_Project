@@ -96,7 +96,7 @@ body {
     padding: 18px 24px;
     border-radius: 16px;
     border: 2px solid var(--accent-gold);
-    box-shadow: 
+    box-shadow:
         inset 0 0 0 1px #2d070a,
         0 6px 12px rgba(0, 0, 0, 0.4);
     transition: transform 0.15s ease, background-color 0.15s ease;
@@ -105,14 +105,14 @@ body {
 .menu-btn:hover {
     background-color: #3b090c;
     transform: translateY(-2px);
-    box-shadow: 
+    box-shadow:
         inset 0 0 0 1px #2d070a,
         0 8px 16px rgba(0, 0, 0, 0.5);
 }
 
 .menu-btn:active {
     transform: translateY(1px);
-    box-shadow: 
+    box-shadow:
         inset 0 0 0 1px #2d070a,
         0 3px 6px rgba(0, 0, 0, 0.4);
 }
@@ -224,7 +224,7 @@ body {
 }
 
 /* Link Styling: Blue text with a blue underline */
-.info-field a, 
+.info-field a,
 .content-card a {
     color: #0066cc;          /* Changes the text color to blue */
     text-decoration: underline; /* Ensures the underline is present */
@@ -302,11 +302,4 @@ body {
     margin: 0;
 }
 
-/* Responsive adjustment */
-@media (max-width: 400px) {
-    .mobile-container {
-        height: 100vh;
-        max-height: none;
-        border-radius: 0;
-    }
 }
