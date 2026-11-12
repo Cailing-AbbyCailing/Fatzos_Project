@@ -1,8 +1,8 @@
 {
-  "name": "com.example.myapp",
-  "displayName": "MyHelloWorld",
+  "name": "com.fatzoexpress.app",
+  "displayName": "Fatzo Express",
   "version": "1.0.0",
-  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "description": "A mobile information and order gateway application for Fatzo Lechon & Catering Services.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
