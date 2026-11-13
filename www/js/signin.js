@@ -42,18 +42,24 @@ alert("Login successful!");
     console.log("Full Name:", profile.full_name);
     console.log("User Role:", profile.role);
 
-    // Identify the user's role
+
+// Identify the user's role and redirect
 if (profile.role === "customer") {
     alert("Welcome, " + profile.full_name + "!");
+    window.location.href = "home.html";
+    return;
 }
 else if (profile.role === "admin") {
     alert("Welcome back, Admin " + profile.full_name + "!");
+    window.location.href = "admin.html";
+    return;
 }
 else {
     alert("Invalid user role. Please contact the administrator.");
     await window.supabaseClient.auth.signOut();
     return;
 }
+
 
 console.log("Logged in user:", data.user);
 });
