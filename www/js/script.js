@@ -1,3 +1,35 @@
+console.log("Admin Supabase Client:", window.supabaseClient);
+
+// Check if the logged-in user is an admin
+async function checkAdminAccess() {
+    const { data: { user }, error } =
+        await window.supabaseClient.auth.getUser();
+
+    if (error || !user) {
+        alert("Please log in first.");
+        window.location.href = "index.html";
+        return;
+    }
+
+    const { data: profile, error: profileError } =
+        await window.supabaseClient
+            .from("profiles")
+            .select("role")
+            .eq("id", user.id)
+            .single();
+
+    if (profileError || profile.role !== "admin") {
+        alert("Access denied. Admins only.");
+        await window.supabaseClient.auth.signOut();
+        window.location.href = "index.html";
+        return;
+    }
+
+    console.log("Admin access verified!");
+}
+
+checkAdminAccess();
+
 // Data Stores
 let lechonData = [
     { id: 'l1', name: 'Whole Lechon XL', price: 12000, available: true },
@@ -37,10 +69,28 @@ function openScreen(screenId) {
 
 // Render Lechon Items
 // Render Lechon Items (with Delete button)
-function renderLechon() {
+// Render Lechon Items from Supabase
+async function renderLechon() {
     const box = document.getElementById('lechon-container');
     if (!box) return;
-    
+
+    // Retrieve Lechon products from Supabase
+    const { data, error } = await window.supabaseClient
+        .from('lechon')
+        .select('*')
+        .order('id', { ascending: true });
+
+    // Check for errors
+    if (error) {
+        console.error("Error loading Lechon products:", error);
+        box.innerHTML = "<p>Failed to load Lechon products.</p>";
+        return;
+    }
+
+    // Update the existing array with database records
+    lechonData = data;
+
+    // Display the products
     box.innerHTML = lechonData.map(item => `
         <div class="admin-card-item">
             <div class="card-row-top">
@@ -58,20 +108,40 @@ function renderLechon() {
             <div class="card-row-bottom">
                 <div class="price-field-wrapper">
                     <span class="peso-sign">₱</span>
-                    <input type="number" value="${item.price}" id="price-${item.id}" class="edit-price-input">
+                    <input type="number" value="${item.price}" id="price-lechon-${item.id}" class="edit-price-input">
                 </div>
                 <button class="save-action-btn" onclick="savePrice('lechon', '${item.id}')">Save</button>
             </div>
         </div>
     `).join('');
+
     updateCounters();
 }
 
-// Render Catering Items (with Delete button)
-function renderCatering() {
+
+
+// Render Catering Items from Supabase
+async function renderCatering() {
     const box = document.getElementById('catering-container');
     if (!box) return;
 
+    // Retrieve Catering products from Supabase
+    const { data, error } = await window.supabaseClient
+        .from('catering')
+        .select('*')
+        .order('id', { ascending: true });
+
+    // Check for errors
+    if (error) {
+        console.error("Error loading Catering products:", error);
+        box.innerHTML = "<p>Failed to load Catering products.</p>";
+        return;
+    }
+
+    // Update the existing array with database records
+    cateringData = data;
+
+    // Display the products
     box.innerHTML = cateringData.map(item => `
         <div class="admin-card-item">
             <div class="card-row-top">
@@ -89,40 +159,90 @@ function renderCatering() {
             <div class="card-row-bottom">
                 <div class="price-field-wrapper">
                     <span class="peso-sign">₱</span>
-                    <input type="number" value="${item.price}" id="price-${item.id}" class="edit-price-input">
+                    <input type="number" value="${item.price}" id="price-catering-${item.id}" class="edit-price-input">
                 </div>
                 <button class="save-action-btn" onclick="savePrice('catering', '${item.id}')">Save</button>
             </div>
         </div>
     `).join('');
+
     updateCounters();
 }
 
+
+
 // Delete Item Function
-function deleteItem(type, id) {
+async function deleteItem(type, id) {
     if (confirm("Are you sure you want to delete this item?")) {
-        if (type === 'lechon') {
-            lechonData = lechonData.filter(i => i.id !== id);
-            renderLechon();
-        } else if (type === 'catering') {
-            cateringData = cateringData.filter(i => i.id !== id);
-            renderCatering();
+
+        if (type === 'lechon' || type === 'catering') {
+
+            // Choose the correct Supabase table
+            const table = type === 'lechon' ? 'lechon' : 'catering';
+
+            // Delete product from Supabase
+            const { error } = await window.supabaseClient
+                .from(table)
+                .delete()
+                .eq('id', id);
+
+            if (error) {
+                console.error(`Error deleting ${type} item:`, error);
+                notify("Failed to delete item!");
+                return;
+            }
+
+            // Refresh the correct product list
+            if (type === 'lechon') {
+                await renderLechon();
+            } else {
+                await renderCatering();
+            }
         }
+
         notify("Item deleted successfully!");
     }
 }
 
+
+
+
+
 // Toggle Item Availability
-function toggleItem(type, id) {
+async function toggleItem(type, id) {
     const list = type === 'lechon' ? lechonData : cateringData;
-    const item = list.find(i => i.id === id);
-    if (item) {
-        item.available = !item.available;
-        notify(`Updated ${item.name}`);
-        if (type === 'lechon') renderLechon();
-        else renderCatering();
+    const item = list.find(i => i.id == id);
+
+    if (!item) return;
+
+    const newAvailability = !item.available;
+
+    // Choose the correct Supabase table
+    const table = type === 'lechon' ? 'lechon' : 'catering';
+
+    // Update availability in Supabase
+    const { error } = await window.supabaseClient
+        .from(table)
+        .update({ available: newAvailability })
+        .eq('id', id);
+
+    if (error) {
+        console.error(`Error updating ${type} availability:`, error);
+        notify("Failed to update availability!");
+        return;
     }
+
+    // Reload the correct product list
+    if (type === 'lechon') {
+        await renderLechon();
+    } else {
+        await renderCatering();
+    }
+
+    notify(`Updated ${item.name}`);
 }
+
+
 
 // Modal Controls
 function openAddModal(category) {
@@ -143,35 +263,48 @@ function closeAddModal() {
 }
 
 // Save New Item from Modal (Fixed to push correctly into lechonData or cateringData)
-function saveNewItem() {
+// Save New Item from Modal
+async function saveNewItem() {
     const name = document.getElementById('modal-item-name').value.trim();
     const price = parseFloat(document.getElementById('modal-item-price').value);
     const statusSelect = document.getElementById('modal-item-status');
     const available = statusSelect ? statusSelect.value === 'available' : true;
 
-    if (!name || isNaN(price)) {
+    if (!name || isNaN(price) || price < 0) {
         notify("Please enter a valid name and price.");
         return;
     }
 
-    const newItem = {
-        id: 'item_' + Date.now(),
-        name: name,
-        price: price,
-        available: available
-    };
+    // Choose the correct Supabase table
+    const table = currentCategory === 'lechon' ? 'lechon' : 'catering';
 
+    // Insert the new product into Supabase
+    const { error } = await window.supabaseClient
+        .from(table)
+        .insert([{
+            name: name,
+            price: price,
+            available: available
+        }]);
+
+    if (error) {
+        console.error(`Error adding ${currentCategory} item:`, error);
+        notify("Failed to add item!");
+        return;
+    }
+
+    // Refresh the correct product list
     if (currentCategory === 'lechon') {
-        lechonData.push(newItem);
-        renderLechon();
-    } else if (currentCategory === 'catering') {
-        cateringData.push(newItem);
-        renderCatering();
+        await renderLechon();
+    } else {
+        await renderCatering();
     }
 
     closeAddModal();
     notify("New item added successfully!");
 }
+
+
 
 // Tracker Orders Rendering & Filtering
 function renderTrackerOrders(orders = trackerOrdersData) {
@@ -236,31 +369,74 @@ function updateOrderStatus(orderId, newStatus) {
     }
 }
 
+
 // Helpers
-function savePrice(type, id) {
-    const val = document.getElementById(`price-${id}`).value;
-    const list = type === 'lechon' ? lechonData : cateringData;
-    const item = list.find(i => i.id === id);
-    if(item) item.price = parseFloat(val) || 0;
-    notify(`Saved new price: ₱${val}`);
+
+async function savePrice(type, id) {
+    const val = document.getElementById(`price-${type}-${id}`).value;
+    const newPrice = parseFloat(val);
+    console.log("ID:", id);
+    console.log("Input value:", val);
+    console.log("Parsed price:", newPrice);
+
+    if (isNaN(newPrice) || newPrice < 0) {
+        notify("Please enter a valid price!");
+        return;
+    }
+
+    // Select the correct Supabase table
+    const table = type === 'lechon' ? 'lechon' : 'catering';
+
+    // Save price to Supabase
+    const { data, error } = await window.supabaseClient
+        .from(table)
+        .update({ price: newPrice })
+        .eq('id', id)
+        .select();
+
+    console.log("Price update result:", data);
+    console.log("Price update error:", error);
+
+    if (error) {
+        console.error(`Error saving ${type} price:`, error);
+        notify("Failed to save price!");
+        return;
+    }
+
+    // Refresh the correct list
+    if (type === 'lechon') {
+        await renderLechon();
+    } else {
+        await renderCatering();
+    }
+
+    // Show success notification
+    notify(`Saved new price: ₱${newPrice}`);
+}
+
+function updateCounters() {
+    // Count the number of Lechon and Catering items
+    const lechonCount = lechonData.length;
+    const cateringCount = cateringData.length;
+
+    console.log("Lechon items:", lechonCount);
+    console.log("Catering items:", cateringCount);
 }
 
 function notify(msg) {
     const toast = document.getElementById('toast');
-    if (!toast) return;
+
+    if (!toast) {
+        console.error("Toast element not found!");
+        return;
+    }
+
     toast.textContent = msg;
     toast.classList.remove('hidden');
-    setTimeout(() => toast.classList.add('hidden'), 2000);
-}
 
-function updateCounters() {
-    const lechonAvailable = lechonData.filter(i => i.available).length;
-    const lechonKpi = document.querySelector('#lechon-screen .kpi-value');
-    if (lechonKpi) lechonKpi.textContent = `${lechonAvailable} Available`;
-
-    const cateringAvailable = cateringData.filter(i => i.available).length;
-    const cateringKpi = document.querySelector('#catering-screen .kpi-value');
-    if (cateringKpi) cateringKpi.textContent = `${cateringAvailable} Available`;
+    setTimeout(() => {
+        toast.classList.add('hidden');
+    }, 2000);
 }
 
 // Initialization on Load
