@@ -14,13 +14,20 @@
 * **Admin Management & Live Catalog Updates:** Dedicated staff dashboard connected to Supabase that enables administrators to update lechon availability, modify prices, edit package details, and update order statuses (Pending, Confirmed, Preparing) in real time.
 
 ## Identified Issues
-**Session Management (Logout)** The Logout button did not redirect users back to the login page due to disconnected page views between the Client/Admin interfaces and the authentication screen. 
+**Session Management (Logout)** 
+- Issue: The Logout button did not redirect users back to the login page due to disconnected page views between the Client/Admin interfaces and the authentication screen. 
+- Solution: Connect the Client (home.html) and Admin (admin.html) logout buttons to the Supabase authentication handler (auth.js / supabase.js), clearing the active user session and local storage tokens before redirecting users back to signin.html.
+
+## Refinements
+- Add logout button to Admin Panel
+- The responsiveness of Admin Panel
+- The consistent style and design of the panels
 
 ## Project Progress & Milestones
 * **Milestone 1 (Project Proposal):** Defined problem statement, system scope, user flows, and UI/UX wireframes.
 * **Milestone 2 (UI & Static Layouts):** Built base HTML/CSS screens (index.html, lechon.html, catering.html, contact.html, login.html, register.html and Admin layouts) and initial mobile viewport styling.
 * **Milestone 3 (Core Feature Implementation):** Implemented Supabase authentication, admin CRUD controls, and refactored the order gateway to Google Forms.
-* **Milestone 4 (Full Integration, Testing & Finalization):** Completed end-to-end component integration, input validation, error handling, UI/UX refinements, and comprehensive user-perspective QA testing.
+* **Milestone 4 (Full Integration & Testing):** Completed end-to-end component integration, input validation, and UI/UX logo refinements. 
 
 ## Testing documentation/results
 ## Admin Login Page 
@@ -45,8 +52,3 @@
 ![External Screenshot](Screenshot/16.jpg)
 ![External Screenshot](Screenshot/7.jpg)
 ![External Screenshot](Screenshot/8.jpg)
-
-## Refinements
-- Add logout button to Admin Panel
-- The responsiveness of Admin Panel
-- The consistent style and design of the panels
