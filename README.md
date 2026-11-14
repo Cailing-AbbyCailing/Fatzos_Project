@@ -51,4 +51,4 @@
 ## Refinements
 - Add logout button to Admin Panel
 - The responsiveness of Admin Panel
-- The consistent git add .style and design of the panels
+- The consistent style and design of the panels
