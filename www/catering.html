@@ -24,7 +24,8 @@
                 <h2 class="section-title">CATERING</h2>
                 
                 <!-- Inner outline container box for packages -->
-                <div class="inner-box">
+                <div class="inner-box" id="catering-container">
+                    <p>Loading Catering packages...</p>
                     
                     <!-- Package 1: Fiesta Pack A -->
                     <div class="package-card">
@@ -56,6 +57,15 @@
             </div>
         </main>
     </div>
+
+    <!-- Supabase Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Supabase Configuration -->
+    <script src="./js/supabase.js"></script>
+
+    <!-- Load Catering Packages -->
+    <script src="./js/catering.js"></script>
 
 </body>
 </html>

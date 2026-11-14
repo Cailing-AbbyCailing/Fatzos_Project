@@ -24,8 +24,9 @@
                 <h2 class="section-title">LECHON</h2>
                 
                 <!-- Inner box container for your products -->
-                <div class="inner-box">
-                    
+                <div class="inner-box" id="lechon-container">
+                    <p>Loading Lechon products...</p>
+
                     <!-- Product 1: Whole Lechon XL -->
                     <div class="package-card">
                         <span class="package-name">Whole Lechon XL</span>
@@ -62,6 +63,15 @@
             </div>
         </main>
     </div>
+
+    <!-- Supabase Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Supabase Configuration -->
+    <script src="./js/supabase.js"></script>
+
+    <!-- Load Lechon Products -->
+    <script src="./js/lechon.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fatzo's - Sign In</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+</head>
+
+<body>
+
+    <div class="mobile-frame">
+
+        <!-- Logo -->
+        <div class="logo-container">
+            <img src="images/logo.png" alt="Fatzo's Logo" class="brand-logo">
+        </div>
+
+        <!-- Sign In Card -->
+        <div class="auth-card">
+
+            <h2 class="card-title">WELCOME BACK</h2>
+            <p class="card-subtitle">Sign in to Continue</p>
+
+            <form id="loginForm" class="auth-form" action="#" method="post">
+
+                <!-- Email -->
+                <div class="input-group">
+                    <label for="email" class="input-label">
+                        EMAIL ADDRESS
+                    </label>
+
+                    <div class="input-wrapper">
+                        <input
+                            type="email"
+                            id="email"
+                            class="form-input"
+                            placeholder="Enter your email"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="input-group">
+                    <label for="password" class="input-label">
+                        PASSWORD
+                    </label>
+
+                    <div class="input-wrapper">
+                        <input
+                            type="password"
+                            id="password"
+                            class="form-input"
+                            placeholder="Enter your password"
+                            required
+                        >
+
+                        <span
+                            class="eye-icon"
+                            onclick="togglePassword()"
+                            aria-label="Toggle password visibility"
+                        ></span>
+                    </div>
+                </div>
+
+                <!-- Sign In -->
+                <button type="submit" class="submit-btn">
+                    SIGN IN
+                </button>
+
+                <!-- Register -->
+                <a href="register.html" class="toggle-link">
+                    New here? Create Account
+                </a>
+
+            </form>
+        </div>
+
+    </div>
+
+    <script>
+        function togglePassword() {
+            const password = document.getElementById("password");
+
+            password.type =
+                password.type === "password" ? "text" : "password";
+        }
+    </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/signin.js"></script>
+
+</body>
+</html>
