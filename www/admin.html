@@ -41,11 +41,11 @@
 
                 <div class="kpi-cards-wrapper">
                     <div class="kpi-card">
-                        <div class="kpi-info"><span class="kpi-label">ACTIVE ORDERS</span><span class="kpi-value">3 Active</span></div>
+                        <div class="kpi-info"><span class="kpi-label">ACTIVE ORDERS</span><span class="kpi-value" id="kpi-lechon-orders">0 Active</span></div>
                         <i class="fa-solid fa-receipt kpi-icon"></i>
                     </div>
                     <div class="kpi-card">
-                        <div class="kpi-info"><span class="kpi-label">MENU ITEMS</span><span class="kpi-value">7 Available</span></div>
+                        <div class="kpi-info"><span class="kpi-label">MENU ITEMS</span><span class="kpi-value" id="kpi-lechon-menu">0 Items</span></div>
                         <i class="fa-solid fa-list-check kpi-icon"></i>
                     </div>
                 </div>
@@ -137,11 +137,11 @@
 
                 <div class="kpi-cards-wrapper">
                     <div class="kpi-card">
-                        <div class="kpi-info"><span class="kpi-label">EVENT PACKAGES</span><span class="kpi-value">5 Active</span></div>
+                        <div class="kpi-info"><span class="kpi-label">EVENT PACKAGES</span><span class="kpi-value" id="kpi-catering-packages">0 Packages</span></div>
                         <i class="fa-solid fa-calendar-days kpi-icon"></i>
                     </div>
                     <div class="kpi-card">
-                        <div class="kpi-info"><span class="kpi-label">BOOKINGS</span><span class="kpi-value">4 Confirmed</span></div>
+                        <div class="kpi-info"><span class="kpi-label">BOOKINGS</span><span class="kpi-value" id="kpi-catering-bookings">0 Bookings</span></div>
                         <i class="fa-solid fa-clipboard-list kpi-icon"></i>
                     </div>
                 </div>
@@ -233,6 +233,14 @@
                 <div class="modal-form-group">
                     <label class="modal-label">ORDER DETAILS / ITEMS</label>
                     <input type="text" id="order-item-details" class="modal-input" placeholder="e.g. Large Lechon Package">
+                </div>
+
+                <div class="modal-form-group">
+                    <label class="modal-label">ORDER CATEGORY</label>
+                    <select id="order-category" class="modal-input">
+                        <option value="Lechon">Lechon</option>
+                        <option value="Catering">Catering</option>
+                    </select>
                 </div>
 
                 <div class="modal-row">

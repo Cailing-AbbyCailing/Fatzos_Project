@@ -1,5 +1,3 @@
-console.log("Admin Supabase Client:", window.supabaseClient);
-
 // Check if the logged-in user is an admin
 async function checkAdminAccess() {
     const { data: { user }, error } =
@@ -44,11 +42,7 @@ let cateringData = [
     { id: 'c3', name: 'Executive (Per Head)', price: 450, available: true }
 ];
 
-let trackerOrdersData = [
-    { id: "ORD-8821", customer: "Juan Dela Cruz", item: "Whole Lechon Large", status: "Preparing", total: 9500 },
-    { id: "ORD-8822", customer: "Maria Santos", item: "Fiesta Pack A", status: "Out for Delivery", total: 18500 },
-    { id: "ORD-8823", customer: "Grace Tan", item: "Whole Lechon Medium", status: "Pending", total: 7500 }
-];
+let trackerOrdersData = [];
 
 let currentCategory = 'lechon';
 
@@ -113,7 +107,7 @@ async function renderLechon() {
         </div>
     `).join('');
 
-    updateCounters();
+
 }
 
 // Render Catering Items
@@ -162,7 +156,7 @@ async function renderCatering() {
         </div>
     `).join('');
 
-    updateCounters();
+
 }
 
 
@@ -195,6 +189,8 @@ async function deleteItem(type, id) {
                 await renderCatering();
             }
         }
+
+        await updateCounters();
 
         notify("Item deleted successfully!");
     }
@@ -296,6 +292,8 @@ async function saveNewItem() {
         await renderCatering();
     }
 
+    await updateCounters();
+
     closeAddModal();
     notify("New item added successfully!");
 }
@@ -315,32 +313,82 @@ function closeAddOrderModal() {
     document.getElementById('order-item-details').value = '';
     document.getElementById('order-total-price').value = '';
     document.getElementById('order-status').value = 'Pending';
+    document.getElementById('order-category').value = 'Lechon';
 }
+async function loadTrackerOrders() {
+    const { data, error } = await window.supabaseClient
+        .from('orders')
+        .select('*')
+        .order('created_at', { ascending: false });
 
-function saveNewOrderToSupabase() {
-    const customerName = document.getElementById('order-customer-name').value.trim();
-    const details = document.getElementById('order-item-details').value.trim();
-    const total = parseFloat(document.getElementById('order-total-price').value) || 0;
-    const status = document.getElementById('order-status').value;
-
-    if (!customerName || !details) {
-        notify('Please fill in customer name and order details.');
+    if (error) {
+        console.error("Error loading orders:", error);
+        notify("Failed to load orders!");
         return;
     }
 
-    const newOrder = {
-        id: 'ORD-' + Math.floor(1000 + Math.random() * 9000),
-        customer: customerName,
-        item: details,
-        status: status,
-        total: total
-    };
+    trackerOrdersData = data.map(order => ({
+        id: order.order_id,
+        customer: order.customer,
+        item: order.item,
+        status: order.status,
+        total: order.total,
+        createdAt: order.created_at,
+        category: order.category
+    }));
 
-    trackerOrdersData.unshift(newOrder); // Add to beginning of array
+
     renderTrackerOrders();
+    await updateCounters();
+}
+
+
+
+async function saveNewOrderToSupabase() {
+    const customerName = document.getElementById('order-customer-name').value.trim();
+    const details = document.getElementById('order-item-details').value.trim();
+    const totalInput = document.getElementById('order-total-price').value;
+    const total = parseFloat(totalInput);
+    const status = document.getElementById('order-status').value;
+    const category = document.getElementById('order-category').value;
+
+    // Validate inputs
+    if (!customerName || !details || totalInput === '' || isNaN(total) || total < 0) {
+        notify('Please enter valid order details.');
+        return;
+    }
+
+    // Generate a unique order reference
+    const orderId = 'ORD-' + Date.now();
+
+    // Insert the new order into Supabase
+    const { data, error } = await window.supabaseClient
+        .from('orders')
+        .insert([{
+            order_id: orderId,
+            customer: customerName,
+            item: details,
+            total: total,
+            status: status,
+            category: category
+        }])
+        .select();
+
+    if (error) {
+        console.error('Error adding order:', error);
+        notify('Failed to add order!');
+        return;
+    }
+
+
+
+    // Reload orders from Supabase
+    await loadTrackerOrders();
+
     closeAddOrderModal();
     notify('Order added successfully!');
 }
+
 
 // Tracker Orders Rendering & Filtering
 function renderTrackerOrders(orders = trackerOrdersData) {
@@ -386,9 +434,11 @@ function filterTrackerOrders() {
     const searchVal = searchInput ? searchInput.value.toLowerCase().trim() : '';
     const statusVal = statusFilter ? statusFilter.value : 'all';
 
+
     const filtered = trackerOrdersData.filter(order => {
-        const matchesSearch = order.customer.toLowerCase().includes(searchVal) || 
-                              order.id.toLowerCase().includes(searchVal);
+        const matchesSearch = order.customer.toLowerCase().includes(searchVal) ||
+                               order.id.toLowerCase().includes(searchVal) ||
+                               order.item.toLowerCase().includes(searchVal);
         const matchesStatus = (statusVal === 'all') || (order.status === statusVal);
         return matchesSearch && matchesStatus;
     });
@@ -396,14 +446,36 @@ function filterTrackerOrders() {
     renderTrackerOrders(filtered);
 }
 
-function updateOrderStatus(orderId, newStatus) {
+
+async function updateOrderStatus(orderId, newStatus) {
+    // Update the order status in Supabase
+    const { data, error } = await window.supabaseClient
+        .from('orders')
+        .update({ status: newStatus })
+        .eq('order_id', orderId)
+        .select();
+
+    if (error || !data || data.length === 0) {
+        console.error('Error updating order status:', error);
+        notify('Failed to update order status!');
+        filterTrackerOrders();
+        return;
+    }
+
+    // Update the local order data
     const order = trackerOrdersData.find(o => o.id === orderId);
+
     if (order) {
         order.status = newStatus;
-        notify(`Order ${orderId} status set to ${newStatus}`);
-        filterTrackerOrders(); 
     }
+
+    // Immediately refresh dashboard counters
+    await updateCounters();
+
+    filterTrackerOrders();
+    notify(`Order ${orderId} status set to ${newStatus}`);
 }
+
 
 
 // Helpers
@@ -411,9 +483,6 @@ function updateOrderStatus(orderId, newStatus) {
 async function savePrice(type, id) {
     const val = document.getElementById(`price-${type}-${id}`).value;
     const newPrice = parseFloat(val);
-    console.log("ID:", id);
-    console.log("Input value:", val);
-    console.log("Parsed price:", newPrice);
 
     if (isNaN(newPrice) || newPrice < 0) {
         notify("Please enter a valid price!");
@@ -430,8 +499,7 @@ async function savePrice(type, id) {
         .eq('id', id)
         .select();
 
-    console.log("Price update result:", data);
-    console.log("Price update error:", error);
+
 
     if (error) {
         console.error(`Error saving ${type} price:`, error);
@@ -450,14 +518,75 @@ async function savePrice(type, id) {
     notify(`Saved new price: ₱${newPrice}`);
 }
 
-function updateCounters() {
-    // Count the number of Lechon and Catering items
-    const lechonCount = lechonData.length;
-    const cateringCount = cateringData.length;
 
-    console.log("Lechon items:", lechonCount);
-    console.log("Catering items:", cateringCount);
+
+async function updateCounters() {
+    // Count active Lechon orders
+    const lechonOrders = trackerOrdersData.filter(order =>
+        order.category === 'Lechon' &&
+        order.status !== 'Completed'
+    ).length;
+
+    // Count active Catering bookings
+    const cateringBookings = trackerOrdersData.filter(order =>
+        order.category === 'Catering' &&
+        order.status !== 'Completed'
+    ).length;
+
+    // Count all Lechon menu items
+    const { count: lechonMenuCount, error: lechonError } =
+        await window.supabaseClient
+            .from('lechon')
+            .select('id', { count: 'exact', head: true });
+
+    // Count all Catering packages
+    const { count: cateringPackageCount, error: cateringError } =
+        await window.supabaseClient
+            .from('catering')
+            .select('id', { count: 'exact', head: true });
+
+    if (lechonError || cateringError) {
+        console.error('Error loading dashboard counts:', lechonError || cateringError);
+    }
+
+    // Update Lechon dashboard
+    document.getElementById('kpi-lechon-orders').textContent =
+        `${lechonOrders} Active`;
+
+    document.getElementById('kpi-lechon-menu').textContent =
+        `${lechonMenuCount ?? 0} Items`;
+
+    // Update Catering dashboard
+    document.getElementById('kpi-catering-bookings').textContent =
+        `${cateringBookings} Bookings`;
+
+    document.getElementById('kpi-catering-packages').textContent =
+        `${cateringPackageCount ?? 0} Packages`;
+
+    // Preserve existing Tracker KPIs
+    const dispatchedCount = trackerOrdersData.filter(
+        order => order.status === 'Out for Delivery'
+    ).length;
+
+    const today = new Date().toLocaleDateString();
+
+    const queueCount = trackerOrdersData.filter(order =>
+        new Date(order.createdAt).toLocaleDateString() === today
+    ).length;
+
+    const dispatchedElement = document.getElementById('kpi-dispatched-count');
+    const queueElement = document.getElementById('kpi-queue-count');
+
+    if (dispatchedElement) {
+        dispatchedElement.textContent = `${dispatchedCount} On Delivery`;
+    }
+
+    if (queueElement) {
+        queueElement.textContent = `${queueCount} Total`;
+    }
 }
+
+
 
 function notify(msg) {
     const toast = document.getElementById('toast');
@@ -478,5 +607,5 @@ function notify(msg) {
 document.addEventListener('DOMContentLoaded', () => {
     renderLechon();
     renderCatering();
-    renderTrackerOrders();
+    loadTrackerOrders();
 });
