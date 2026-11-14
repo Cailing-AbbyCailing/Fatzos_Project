@@ -2,7 +2,7 @@
 <widget id="com.fatzoexpress.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Fatzo Express</name>
     <description>
-        A mobile information and order gateway application for Fatzo Lechon & Catering Services.
+        A mobile information and order gateway application for Fatzo Lechon &amp; Catering Services.
     </description>
     <author email="dev@cordova.apache.org" href="https://cordova.apache.org">
         Apache Cordova Team
