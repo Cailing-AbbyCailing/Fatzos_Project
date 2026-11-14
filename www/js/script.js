@@ -68,8 +68,6 @@ function openScreen(screenId) {
 }
 
 // Render Lechon Items
-// Render Lechon Items (with Delete button)
-// Render Lechon Items from Supabase
 async function renderLechon() {
     const box = document.getElementById('lechon-container');
     if (!box) return;
@@ -118,9 +116,7 @@ async function renderLechon() {
     updateCounters();
 }
 
-
-
-// Render Catering Items from Supabase
+// Render Catering Items
 async function renderCatering() {
     const box = document.getElementById('catering-container');
     if (!box) return;
@@ -244,7 +240,7 @@ async function toggleItem(type, id) {
 
 
 
-// Modal Controls
+// Modal Controls for Menu Items
 function openAddModal(category) {
     currentCategory = category;
     const titleEl = document.getElementById('modal-title');
@@ -262,7 +258,7 @@ function closeAddModal() {
     document.getElementById('addItemModal').classList.add('hidden');
 }
 
-// Save New Item from Modal (Fixed to push correctly into lechonData or cateringData)
+// Save New Menu Item from Modal
 // Save New Item from Modal
 async function saveNewItem() {
     const name = document.getElementById('modal-item-name').value.trim();
@@ -304,7 +300,47 @@ async function saveNewItem() {
     notify("New item added successfully!");
 }
 
+// --- Add Order Modal Functions ---
 
+function openAddOrderModal() {
+    const modal = document.getElementById('addOrderModal');
+    if (modal) modal.classList.remove('hidden');
+}
+
+function closeAddOrderModal() {
+    const modal = document.getElementById('addOrderModal');
+    if (modal) modal.classList.add('hidden');
+    
+    document.getElementById('order-customer-name').value = '';
+    document.getElementById('order-item-details').value = '';
+    document.getElementById('order-total-price').value = '';
+    document.getElementById('order-status').value = 'Pending';
+}
+
+function saveNewOrderToSupabase() {
+    const customerName = document.getElementById('order-customer-name').value.trim();
+    const details = document.getElementById('order-item-details').value.trim();
+    const total = parseFloat(document.getElementById('order-total-price').value) || 0;
+    const status = document.getElementById('order-status').value;
+
+    if (!customerName || !details) {
+        notify('Please fill in customer name and order details.');
+        return;
+    }
+
+    const newOrder = {
+        id: 'ORD-' + Math.floor(1000 + Math.random() * 9000),
+        customer: customerName,
+        item: details,
+        status: status,
+        total: total
+    };
+
+    trackerOrdersData.unshift(newOrder); // Add to beginning of array
+    renderTrackerOrders();
+    closeAddOrderModal();
+    notify('Order added successfully!');
+}
 
 // Tracker Orders Rendering & Filtering
 function renderTrackerOrders(orders = trackerOrdersData) {
@@ -439,7 +475,6 @@ function notify(msg) {
     }, 2000);
 }
 
-// Initialization on Load
 document.addEventListener('DOMContentLoaded', () => {
     renderLechon();
     renderCatering();

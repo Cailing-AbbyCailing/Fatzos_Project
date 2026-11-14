@@ -64,6 +64,7 @@
             </div>
         </section>
 
+        <!-- Add Menu Item Modal -->
         <div id="addItemModal" class="modal-overlay hidden">
             <div class="modal-card">
                 <button class="modal-close-btn" onclick="closeAddModal()">&times;</button>
@@ -128,14 +129,12 @@
 
         <section id="catering-screen" class="subpage-main">
             <div class="content-card">
-                <!-- Top Sub-Navigation Tabs -->
                 <div class="sub-nav-tabs">
                     <button class="sub-tab-btn" onclick="openScreen('lechon')"><i class="fa-solid fa-drumstick-bite"></i> Lechon</button>
                     <button class="sub-tab-btn active" onclick="openScreen('catering')"><i class="fa-solid fa-utensils"></i> Catering</button>
                     <button class="sub-tab-btn" onclick="openScreen('tracker')"><i class="fa-solid fa-truck"></i> Tracker <span class="nav-dot"></span></button>
                 </div>
 
-                <!-- Summary KPI Cards -->
                 <div class="kpi-cards-wrapper">
                     <div class="kpi-card">
                         <div class="kpi-info"><span class="kpi-label">EVENT PACKAGES</span><span class="kpi-value">5 Active</span></div>
@@ -147,14 +146,12 @@
                     </div>
                 </div>
 
-                <!-- Catering Section Header with + Add Item Button -->
                 <div class="section-header-row">
                     <h2 class="section-title"><i class="fa-solid fa-sliders"></i> CATERING MENU</h2>
-                        <button class="open-modal-btn" onclick="openAddModal('catering')">+ Add Item</button>
+                    <button class="open-modal-btn" onclick="openAddModal('catering')">+ Add Item</button>
                 </div>
 
                 <div id="catering-container" class="inner-box">
-                    <!-- Populated dynamically via script.js -->
                 </div>
                 
                 <button class="back-btn" onclick="openScreen('home')">
@@ -196,7 +193,10 @@
 
                 <div class="tracker-header-row">
                     <h2 class="section-title"><i class="fa-solid fa-user-gear"></i> CUSTOMER ORDERS</h2>
-                    <span id="tracker-order-count" class="tracker-count-badge">3 Total</span>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <span id="tracker-order-count" class="tracker-count-badge">3 Total</span>
+                        <button class="open-modal-btn" onclick="openAddOrderModal()">+ Add Order</button>
+                    </div>
                 </div>
 
                 <div class="tracker-filter-bar">
@@ -218,14 +218,52 @@
                 </button>
             </div>
         </section>
+
+        <!-- Add Order Modal Overlay -->
+        <div id="addOrderModal" class="modal-overlay hidden">
+            <div class="modal-card">
+                <button class="modal-close-btn" onclick="closeAddOrderModal()">&times;</button>
+                <h3 class="modal-title">ADD NEW CUSTOMER ORDER</h3>
+                
+                <div class="modal-form-group">
+                    <label class="modal-label">CUSTOMER NAME</label>
+                    <input type="text" id="order-customer-name" class="modal-input" placeholder="e.g. Juan Dela Cruz">
+                </div>
+
+                <div class="modal-form-group">
+                    <label class="modal-label">ORDER DETAILS / ITEMS</label>
+                    <input type="text" id="order-item-details" class="modal-input" placeholder="e.g. Large Lechon Package">
+                </div>
+
+                <div class="modal-row">
+                    <div class="modal-form-group flex-1">
+                        <label class="modal-label">TOTAL AMOUNT (₱)</label>
+                        <input type="number" id="order-total-price" class="modal-input" placeholder="0.00">
+                    </div>
+                    <div class="modal-form-group flex-1">
+                        <label class="modal-label">STATUS</label>
+                        <select id="order-status" class="modal-input">
+                            <option value="Pending">Pending</option>
+                            <option value="Preparing">Preparing</option>
+                            <option value="Out for Delivery">Out for Delivery</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-btn-row">
+                    <button class="modal-cancel-btn" onclick="closeAddOrderModal()">Cancel</button>
+                    <button class="modal-save-btn" onclick="saveNewOrderToSupabase()">Save Order</button>
+                </div>
+            </div>
+        </div>
+        <!-- End Add Order Modal -->
+
     </div>
-    <!-- Supabase Library -->
+
+    <!-- Supabase SDK & Configuration Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <!-- Supabase Configuration -->
     <script src="js/supabase.js"></script>
-
-    <!-- Admin JavaScript -->
     <script src="js/script.js"></script>
 </body>
 </html>
