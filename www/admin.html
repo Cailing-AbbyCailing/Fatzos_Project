@@ -12,15 +12,13 @@
     <div class="mobile-container">
         <div id="toast" class="toast-msg hidden">Changes saved</div>
 
-        <header class="header">
-            <div class="header-content">
-                <div class="logo-box">
-                    <img src="www/img/logo.png" alt="FATZO'S Logo" class="brand-logo" onerror="this.style.display='none';">
-                </div>
-                <h1 class="brand-title-text" style="display:none;">FATZO'S</h1>
-                <span class="brand-subtitle-text">Admin Panel</span>
-            </div>
-        </header>
+       <header class="header">
+    <div class="header-content">
+        <div class="logo-box">
+            <img src="/www/images/logo.png" alt="FATZO'S Logo" class="brand-logo" onerror="this.style.display='none';">
+        </div>
+    </div>
+</header>
 
         <main id="home-screen" class="menu-main">
             <div class="buttons-wrapper">
@@ -28,6 +26,7 @@
                 <button class="menu-btn" onclick="openScreen('catering')">CATERING</button>
                 <button class="menu-btn" onclick="openScreen('contact')">CONTACT</button>
                 <button class="menu-btn" onclick="openScreen('tracker')">TRACKER</button>
+                <button class="menu-btn" id="logout-btn" onclick="handleAdminLogout()">LOGOUT</button>
             </div>
         </main>
 
