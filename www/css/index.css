@@ -273,6 +273,13 @@ body {
     margin: 0;
 }
 
+.package-description {
+    color: #d4af37;
+    font-size: 0.9rem;
+    margin: 6px 0 12px 0;
+    line-height: 1.5;
+    white-space: pre-line;
+}
 
 /* ==========================================
    LAPTOP / DESKTOP FULL-SCREEN MEDIA QUERY
