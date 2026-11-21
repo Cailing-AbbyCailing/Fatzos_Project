@@ -22,7 +22,7 @@ async function loadLechonProducts() {
     const container = document.getElementById('lechon-container');
     const { data, error } = await window.supabaseClient
         .from('lechon')
-        .select('id, name, price, available')
+        .select('id, name, description, price, available')
         .order('id', { ascending: true });
 
     if (error) {
@@ -37,12 +37,11 @@ async function loadLechonProducts() {
     }
 
     container.innerHTML = data.map(item => {
-        const desc = getLechonDescription(item.name);
+        const desc = item.description;
         return `
             <div class="package-card">
                 <span class="package-name">${escapeHTML(item.name)}</span>
                 ${desc ? `<p class="package-description">${escapeHTML(desc)}</p>` : ''}
-                <p class="package-description">${escapeHTML(lechonAddonsNote)}</p>
                 <div class="price-input">
                     ₱ ${Number(item.price).toLocaleString('en-PH')}
                 </div>

@@ -444,6 +444,25 @@ input:checked + .toggle-slider:before {
     margin-left: 4px;
 }
 
+.edit-description-input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--accent-gold);
+    border-radius: 4px;
+    color: #fff;
+    font-size: 0.8rem;
+    width: 100%;
+    min-height: 60px;
+    padding: 8px;
+    outline: none;
+    resize: vertical;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+.edit-description-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
 .save-action-btn {
     background-color: var(--accent-gold);
     color: var(--header-burgundy);
