@@ -1,6 +1,5 @@
-// Get the currently logged-in user's profile
 async function getCurrentProfile() {
-    // Check if a user has an active session
+
     const { data: { session }, error: sessionError } =
         await window.supabaseClient.auth.getSession();
 
@@ -13,7 +12,7 @@ async function getCurrentProfile() {
         return { profile: null, error: null };
     }
 
-    // Retrieve the user's profile from the profiles table
+
     const { data: profile, error } = await window.supabaseClient
         .from("profiles")
         .select("id, full_name, role")
@@ -23,7 +22,7 @@ async function getCurrentProfile() {
     return { profile, error };
 }
 
-// Log out the current user
+
 async function logoutUser() {
     const { error } = await window.supabaseClient.auth.signOut();
 
@@ -33,14 +32,14 @@ async function logoutUser() {
         return;
     }
 
-    // Return the user to the sign-in page
+
     window.location.href = "index.html";
 
     
 }
 
 
-// Check whether the logged-in user has the required role
+
 async function requireRole(requiredRole) {
     const { profile, error } = await getCurrentProfile();
 
@@ -58,7 +57,7 @@ async function requireRole(requiredRole) {
     return true;
 }
 
-// Make authentication functions accessible to other scripts
+
 window.authHelpers = {
     getCurrentProfile,
     logoutUser

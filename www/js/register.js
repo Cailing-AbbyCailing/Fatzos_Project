@@ -1,19 +1,17 @@
-
-// Get the registration form
 const registerForm = document.getElementById("registerForm");
 
-// Listen for form submission
+
 registerForm.addEventListener("submit", async function (event) {
 
-    // Prevent the page from refreshing
+
     event.preventDefault();
 
-    // Get the user's input
+
     const fullName = document.getElementById("fullName").value.trim();
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
 
-    // Check that the full name is not empty
+
     if (!fullName) {
         alert("Please enter your full name.");
         return;
