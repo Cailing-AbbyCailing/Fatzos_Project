@@ -93,37 +93,34 @@ async function renderLechon() {
     lechonData = data;
 
 
-box.innerHTML = lechonData.map(item => `
-    <div class="admin-card-item">
-        <div class="card-row-top">
-            <span class="item-name-text">${item.name}</span>
-            <div class="switch-box">
-                <label class="toggle-switch">
-                    <input type="checkbox" ${item.available ? 'checked' : ''} onchange="toggleItem('lechon', '${item.id}')">
-                    <span class="toggle-slider"></span>
-                </label>
-                <button class="delete-btn" onclick="deleteItem('lechon', '${item.id}')" title="Delete Item">
-                    <i class="fa-solid fa-trash-can"></i>
-                </button>
+    box.innerHTML = lechonData.map(item => `
+        <div class="admin-card-item">
+            <div class="card-row-top">
+                <span class="item-name-text">${item.name}</span>
+                <div class="switch-box">
+                    <label class="toggle-switch">
+                        <input type="checkbox" ${item.available ? 'checked' : ''} onchange="toggleItem('lechon', '${item.id}')">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <button class="delete-btn" onclick="deleteItem('lechon', '${item.id}')" title="Delete Item">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="description-field-wrapper">
+                <textarea id="description-lechon-${item.id}" class="edit-description-input" placeholder="Enter product description...">${item.description || ''}</textarea>
+            </div>
+
+            <div class="card-row-bottom">
+                <div class="price-field-wrapper">
+                    <span class="peso-sign">₱</span>
+                    <input type="number" value="${item.price}" id="price-lechon-${item.id}" class="edit-price-input">
+                </div>
+                <button class="save-action-btn" onclick="savePrice('lechon', '${item.id}')">Save</button>
             </div>
         </div>
-
-        <div class="description-field-wrapper">
-            <textarea id="description-lechon-${item.id}" class="edit-description-input" placeholder="Enter product description...">${item.description || ''}</textarea>
-        </div>
-
-        <div class="card-row-bottom">
-            <div class="price-field-wrapper">
-                <span class="peso-sign">₱</span>
-                <input type="number" value="${item.price}" id="price-lechon-${item.id}" class="edit-price-input">
-            </div>
-            <button class="save-action-btn" onclick="savePrice('lechon', '${item.id}')">Save</button>
-        </div>
-    </div>
-`).join('');
-
-
-
+    `).join('');
 }
 
 
@@ -163,7 +160,7 @@ async function renderCatering() {
                 </div>
             </div>
             <div class="description-field-wrapper">
-            <textarea id="description-catering-${item.id}" class="edit-description-input" placeholder="Enter product description...">${item.description || ''}</textarea>
+                <textarea id="description-catering-${item.id}" class="edit-description-input" placeholder="Enter product description...">${item.description || ''}</textarea>
             </div>
             <div class="card-row-bottom">
                 <div class="price-field-wrapper">
@@ -174,11 +171,7 @@ async function renderCatering() {
             </div>
         </div>
     `).join('');
-
-
 }
-
-
 
 
 async function deleteItem(type, id) {
@@ -186,9 +179,7 @@ async function deleteItem(type, id) {
 
         if (type === 'lechon' || type === 'catering') {
 
-
             const table = type === 'lechon' ? 'lechon' : 'catering';
-
 
             const { error } = await window.supabaseClient
                 .from(table)
@@ -200,7 +191,6 @@ async function deleteItem(type, id) {
                 notify("Failed to delete item!");
                 return;
             }
-
 
             if (type === 'lechon') {
                 await renderLechon();
@@ -216,10 +206,6 @@ async function deleteItem(type, id) {
 }
 
 
-
-
-
-
 async function toggleItem(type, id) {
     const list = type === 'lechon' ? lechonData : cateringData;
     const item = list.find(i => i.id == id);
@@ -228,9 +214,7 @@ async function toggleItem(type, id) {
 
     const newAvailability = !item.available;
 
-
     const table = type === 'lechon' ? 'lechon' : 'catering';
-
 
     const { error } = await window.supabaseClient
         .from(table)
@@ -243,7 +227,6 @@ async function toggleItem(type, id) {
         return;
     }
 
-
     if (type === 'lechon') {
         await renderLechon();
     } else {
@@ -252,8 +235,6 @@ async function toggleItem(type, id) {
 
     notify(`Updated ${item.name}`);
 }
-
-
 
 
 function openAddModal(category) {
@@ -274,7 +255,6 @@ function closeAddModal() {
 }
 
 
-/
 async function saveNewItem() {
     const name = document.getElementById('modal-item-name').value.trim();
     const price = parseFloat(document.getElementById('modal-item-price').value);
@@ -287,9 +267,7 @@ async function saveNewItem() {
         return;
     }
 
-
     const table = currentCategory === 'lechon' ? 'lechon' : 'catering';
-
 
     const { error } = await window.supabaseClient
         .from(table)
@@ -306,7 +284,6 @@ async function saveNewItem() {
         return;
     }
 
-
     if (currentCategory === 'lechon') {
         await renderLechon();
     } else {
@@ -318,7 +295,6 @@ async function saveNewItem() {
     closeAddModal();
     notify("New item added successfully!");
 }
-
 
 
 function openAddOrderModal() {
@@ -336,6 +312,7 @@ function closeAddOrderModal() {
     document.getElementById('order-status').value = 'Pending';
     document.getElementById('order-category').value = 'Lechon';
 }
+
 async function loadTrackerOrders() {
     const { data, error } = await window.supabaseClient
         .from('orders')
@@ -358,11 +335,9 @@ async function loadTrackerOrders() {
         category: order.category
     }));
 
-
     renderTrackerOrders();
     await updateCounters();
 }
-
 
 
 async function saveNewOrderToSupabase() {
@@ -373,15 +348,12 @@ async function saveNewOrderToSupabase() {
     const status = document.getElementById('order-status').value;
     const category = document.getElementById('order-category').value;
 
-
     if (!customerName || !details || totalInput === '' || isNaN(total) || total < 0) {
         notify('Please enter valid order details.');
         return;
     }
 
-
     const orderId = 'ORD-' + Date.now();
-
 
     const { data, error } = await window.supabaseClient
         .from('orders')
@@ -401,15 +373,11 @@ async function saveNewOrderToSupabase() {
         return;
     }
 
-
-
-
     await loadTrackerOrders();
 
     closeAddOrderModal();
     notify('Order added successfully!');
 }
-
 
 
 function renderTrackerOrders(orders = trackerOrdersData) {
@@ -455,7 +423,6 @@ function filterTrackerOrders() {
     const searchVal = searchInput ? searchInput.value.toLowerCase().trim() : '';
     const statusVal = statusFilter ? statusFilter.value : 'all';
 
-
     const filtered = trackerOrdersData.filter(order => {
         const matchesSearch = order.customer.toLowerCase().includes(searchVal) ||
                                order.id.toLowerCase().includes(searchVal) ||
@@ -469,7 +436,6 @@ function filterTrackerOrders() {
 
 
 async function updateOrderStatus(orderId, newStatus) {
-
     const { data, error } = await window.supabaseClient
         .from('orders')
         .update({ status: newStatus })
@@ -483,23 +449,17 @@ async function updateOrderStatus(orderId, newStatus) {
         return;
     }
 
-
     const order = trackerOrdersData.find(o => o.id === orderId);
 
     if (order) {
         order.status = newStatus;
     }
 
-
     await updateCounters();
 
     filterTrackerOrders();
     notify(`Order ${orderId} status set to ${newStatus}`);
 }
-
-
-
-
 
 
 async function savePrice(type, id) {
@@ -540,27 +500,21 @@ async function savePrice(type, id) {
 }
 
 
-
-
 async function updateCounters() {
-
     const lechonOrders = trackerOrdersData.filter(order =>
         order.category === 'Lechon' &&
         order.status !== 'Completed'
     ).length;
-
 
     const cateringBookings = trackerOrdersData.filter(order =>
         order.category === 'Catering' &&
         order.status !== 'Completed'
     ).length;
 
-
     const { count: lechonMenuCount, error: lechonError } =
         await window.supabaseClient
             .from('lechon')
             .select('id', { count: 'exact', head: true });
-
 
     const { count: cateringPackageCount, error: cateringError } =
         await window.supabaseClient
@@ -571,20 +525,17 @@ async function updateCounters() {
         console.error('Error loading dashboard counts:', lechonError || cateringError);
     }
 
-
     document.getElementById('kpi-lechon-orders').textContent =
         `${lechonOrders} Active`;
 
     document.getElementById('kpi-lechon-menu').textContent =
         `${lechonMenuCount ?? 0} Items`;
 
-
     document.getElementById('kpi-catering-bookings').textContent =
         `${cateringBookings} Bookings`;
 
     document.getElementById('kpi-catering-packages').textContent =
         `${cateringPackageCount ?? 0} Packages`;
-
 
     const dispatchedCount = trackerOrdersData.filter(
         order => order.status === 'Out for Delivery'
@@ -607,7 +558,6 @@ async function updateCounters() {
         queueElement.textContent = `${queueCount} Total`;
     }
 }
-
 
 
 function notify(msg) {
