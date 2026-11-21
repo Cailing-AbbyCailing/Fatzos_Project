@@ -1,5 +1,4 @@
 async function getCurrentProfile() {
-
     const { data: { session }, error: sessionError } =
         await window.supabaseClient.auth.getSession();
 
@@ -12,7 +11,6 @@ async function getCurrentProfile() {
         return { profile: null, error: null };
     }
 
-
     const { data: profile, error } = await window.supabaseClient
         .from("profiles")
         .select("id, full_name, role")
@@ -22,7 +20,6 @@ async function getCurrentProfile() {
     return { profile, error };
 }
 
-
 async function logoutUser() {
     const { error } = await window.supabaseClient.auth.signOut();
 
@@ -31,14 +28,9 @@ async function logoutUser() {
         alert("Unable to log out. Please try again.");
         return;
     }
-
-
     window.location.href = "index.html";
 
-    
 }
-
-
 
 async function requireRole(requiredRole) {
     const { profile, error } = await getCurrentProfile();
@@ -56,12 +48,6 @@ async function requireRole(requiredRole) {
 
     return true;
 }
-
-
-window.authHelpers = {
-    getCurrentProfile,
-    logoutUser
-};
 
 window.authHelpers = {
     getCurrentProfile,
