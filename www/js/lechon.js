@@ -1,4 +1,3 @@
-// Local descriptions mapped by Lechon size or variant keyword
 const lechonDescriptions = {
     "lechon de leche": "• 17–20 Kilos\n• Good for 20 Pax\n• FREE Dinuguan or Halang-Halang\n• FREE Delivery anywhere in the City\n• CASH on DELIVERY",
     "regular": "• 22–25 Kilos\n• Good for 25–30 Pax\n• FREE Dinuguan or Halang-Halang\n• FREE Delivery anywhere in the City\n• CASH on DELIVERY",
@@ -9,10 +8,8 @@ const lechonDescriptions = {
     "chicken": "• Add only ₱850\n• 3 Whole Chickens Stuffed into your Lechon"
 };
 
-// Shared add-on note stacked vertically
 const lechonAddonsNote = "Stuffing Add-ons:\n• Seafoods Stuffed Lechon (+₱1,800: 1kg Shrimps, 1kg Crabs, 1kg Sweet Corn)\n• Chicken Stuffed Lechon (+₱850: 3 Whole Chickens)";
 
-// Match a Supabase item name to its description
 function getLechonDescription(name) {
     const lowerName = String(name ?? '').toLowerCase();
     const matchedKey = Object.keys(lechonDescriptions).find(key =>
@@ -23,27 +20,22 @@ function getLechonDescription(name) {
 
 async function loadLechonProducts() {
     const container = document.getElementById('lechon-container');
-
-    // Retrieve products from Supabase
     const { data, error } = await window.supabaseClient
         .from('lechon')
         .select('id, name, price, available')
         .order('id', { ascending: true });
 
-    // Handle database errors
     if (error) {
         console.error("Error loading Lechon:", error);
         container.innerHTML = "<p>Failed to load Lechon products.</p>";
         return;
     }
 
-    // Handle empty list
     if (!data || data.length === 0) {
         container.innerHTML = "<p>No Lechon products available.</p>";
         return;
     }
 
-    // Display products with matched descriptions
     container.innerHTML = data.map(item => {
         const desc = getLechonDescription(item.name);
         return `
@@ -60,7 +52,6 @@ async function loadLechonProducts() {
     }).join('');
 }
 
-// Prevent product text from being interpreted as HTML
 function escapeHTML(value) {
     return String(value ?? '').replace(/[&<>"']/g, char => ({
         '&': '&amp;',
@@ -71,5 +62,4 @@ function escapeHTML(value) {
     })[char]);
 }
 
-// Run when the page loads
 loadLechonProducts();

@@ -5,20 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fatzo's - Main Menu</title>
     <link rel="stylesheet" href="./css/index.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <div class="mobile-container">
-    <!-- Header Section with Image Logo -->
     <header class="header">
         <div class="header-content">
             <img src="./img/logo.png" alt="Fatzo's Lechon & Catering Services" class="brand-logo">
         </div>
     </header>
 
-    <!-- Main Content Area -->
     <main class="menu-main">
         <div class="buttons-wrapper">
             <a href="./lechon.html" class="menu-btn">LECHON</a>
@@ -32,25 +29,9 @@
     </main>
 </div>
 
-<!-- Supabase Library -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<!-- Initialize Supabase -->
 <script src="./js/supabase.js"></script>
-
-<!-- Logout Function -->
-<script>
-    async function logout() {
-        const { error } = await window.supabaseClient.auth.signOut();
-
-        if (error) {
-            alert("Logout failed: " + error.message);
-            return;
-        }
-
-        window.location.href = "index.html";
-    }
-</script>
+<script src="./js/index.js"></script>
 </body>
 </html>
 

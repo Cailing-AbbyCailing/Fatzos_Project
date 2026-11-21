@@ -1,4 +1,3 @@
-/* CSS Reset & Variables */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -18,27 +17,25 @@ body {
     background-color: #222;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Changed from center to allow top-to-bottom scrolling */
+    align-items: flex-start;
     min-height: 100vh;
     font-family: 'Cinzel', serif;
-    overflow-y: auto; /* Enables natural browser scrolling */
+    overflow-y: auto;
 }
 
-/* Full Screen Container (Allows scrolling instead of trapping height) */
 .mobile-container {
     width: 100%;
     max-width: 400px;
-    min-height: 100vh; /* Changed from fixed height to min-height */
+    min-height: 100vh;
     height: auto;
     background-color: var(--bg-cream);
     display: flex;
     flex-direction: column;
     position: relative;
-    overflow: visible; /* Fixed: allows content to flow and scroll properly */
+    overflow: visible;
     box-shadow: 0 10px 25px rgba(0,0,0,0.5);
 }
 
-/* Header Styling */
 .header {
     background-color: var(--header-burgundy);
     padding: 25px 15px;
@@ -58,7 +55,6 @@ body {
     width: 100%;
 }
 
-/* Image Logo Styling */
 .brand-logo {
     width: 100%;
     max-width: 340px;
@@ -67,7 +63,6 @@ body {
     object-fit: contain;
 }
 
-/* Main Menu Area Styles */
 .menu-main {
     flex: 1;
     display: flex;
@@ -87,7 +82,6 @@ body {
     max-width: 320px;
 }
 
-/* Menu Button Styles */
 .menu-btn, .menu-btn.logout-btn {
     width: 100%;
     background-color: #3b0606;
@@ -118,23 +112,21 @@ body {
     transform: translateY(1px);
 }
 
-/* Sub-page Main Area */
 .subpage-main {
     flex: 1;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Allows cards to expand naturally */
+    align-items: flex-start;
     padding: 25px 20px;
     position: relative;
     background-image: radial-gradient(rgba(74, 13, 17, 0.05) 1px, transparent 1px);
     background-size: 20px 20px;
 }
 
-/* Sub-page Card Container */
 .content-card {
     background-color: var(--primary-burgundy);
     width: 100%;
-    height: auto; /* Changed from fixed 100% to auto so it expands with content */
+    height: auto;
     min-height: 550px;
     border-radius: 25px;
     border: 1px solid rgba(212, 160, 55, 0.3);
@@ -142,7 +134,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 22px 15px 60px 15px; /* Added extra bottom padding for the back button */
+    padding: 22px 15px 60px 15px;
     position: relative;
 }
 
@@ -156,11 +148,11 @@ body {
 
 .inner-box {
     width: 100%;
-    height: auto; /* Removed fixed flex layout restrictions */
+    height: auto;
     border: 1px solid rgba(212, 160, 55, 0.4);
     border-radius: 12px;
     margin-bottom: 20px;
-    overflow-y: visible; /* Let the main page handle scrolling */
+    overflow-y: visible;
     padding: 15px 12px;
     display: flex;
     flex-direction: column;
@@ -224,7 +216,6 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* Link Styling */
 .info-field a,
 .content-card a {
     color: #0066cc;
@@ -232,7 +223,6 @@ body {
     text-decoration-color: #0066cc;
 }
 
-/* Back Arrow Button */
 .back-btn {
     position: absolute;
     bottom: 15px;
@@ -281,9 +271,6 @@ body {
     white-space: pre-line;
 }
 
-/* ==========================================
-   LAPTOP / DESKTOP FULL-SCREEN MEDIA QUERY
-   ========================================== */
 @media (min-width: 768px) {
     .mobile-container {
         max-width: 100vw;
@@ -306,7 +293,7 @@ body {
     }
 
     .content-card {
-        max-height: none; /* Allows full vertical scrolling */
+        max-height: none;
         max-width: 900px;
         margin: 20px auto;
         padding: 40px;
