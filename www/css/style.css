@@ -1,0 +1,22 @@
+  /* CSS Reset & Variables */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary-burgundy: #6b1419;
+            --header-burgundy: #5a1015;
+            --accent-gold: #e5b84d;
+            --bg-cream: #e9cf9f;
+        }
+
+        body {
+           background-color: #222;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Cinzel', serif;
+        }
